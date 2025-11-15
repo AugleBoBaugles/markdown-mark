@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
 import "../App.css";
 
 export default function MarkdownMark() {
@@ -89,8 +90,8 @@ export default function MarkdownMark() {
 
       {/* Output Card */}
       {output && (
-        <div className="output-card">
-          <textarea className="textarea" value={output} readOnly />
+        <div className="output-card markdown-output">
+          <ReactMarkdown>{output}</ReactMarkdown>
         </div>
       )}
     </div>
