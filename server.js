@@ -8,7 +8,7 @@ dotenv.config();
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const app = express();
-app.use(cors()); // Allow requests from frontend
+app.use(cors());
 app.use(express.json());
 
 app.post("/api/run-agent", async (req, res) => {
