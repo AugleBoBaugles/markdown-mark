@@ -62,9 +62,8 @@ body {
   gap: 10px;
   flex-wrap: wrap;
   width: 100%;
-  justify-content: center; /* CENTER the buttons horizontally */
+  justify-content: center; /* center horizontally */
 }
-
 
 .level-buttons button,
 .placeholder-buttons button,
@@ -86,17 +85,14 @@ body {
   font-weight: bold;
 }
 
+/* Stretch placeholder buttons */
 .placeholder-buttons {
-  justify-content: space-between;
+  display: flex;
+  gap: 10px;
 }
 
 .placeholder-buttons button {
-  flex: 1;
-  margin-right: 10px;
-}
-
-.placeholder-buttons button:last-child {
-  margin-right: 0;
+  flex: 1; /* stretch to fill equally */
 }
 
 .level-buttons button:hover,
@@ -113,6 +109,7 @@ body {
   padding: 12px 0;
   border-radius: 8px;
 }
+
 .output-card {
   background-color: white;
   border-radius: 12px;
