@@ -1,0 +1,9 @@
+{
+  "name": "markdown-mark",
+  "version": "0.0.1",
+  "main": "index.js",
+  "engines": { "node": ">=16" },
+  "scripts": {
+    "start": "node index.js"
+  }
+}

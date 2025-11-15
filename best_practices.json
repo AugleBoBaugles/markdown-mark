@@ -1,0 +1,98 @@
+{
+  "naming": {
+    "title": "Naming: clear, consistent names",
+    "summary": "Use descriptive names that communicate purpose; follow language conventions (snake_case, camelCase, PascalCase).",
+    "beginner_example": "python: total_price = 9.99  # clear name, not 'tp'",
+    "intermediate_example": "js: function calculateInvoiceTotal(items) { /* clear intent */ }",
+    "advanced_notes": "Consider domain language, bounded contexts, and API stability. Use rename-refactor tooling for large changes.",
+    "checklist": ["Follow language naming convention","Avoid ambiguous abbreviations","Include units or types when helpful"]
+  },
+  "error_handling": {
+    "title": "Error handling: fail fast, handle what you can",
+    "summary": "Catch and handle errors where you can do something; otherwise let them propagate to a centralized handler.",
+    "beginner_example": "python:\ntry:\n  data = open('config.json')\nexcept FileNotFoundError:\n  print('Add config.json')",
+    "intermediate_example": "node/express: use next(err) in routes and centralized error middleware for logging/response",
+    "advanced_notes": "Differentiate transient vs permanent errors, add retry/backoff, instrument metrics and SLOs.",
+    "checklist": ["Don't swallow exceptions","Log useful context (request id)","Avoid leaking secrets in error messages"]
+  },
+  "testing": {
+    "title": "Testing: automated, fast, and meaningful",
+    "summary": "Write automated tests for critical behavior; prefer fast unit tests and a smaller number of reliable integration tests.",
+    "beginner_example": "Add a simple unit test that verifies a function returns expected output.",
+    "intermediate_example": "Mock external services in unit tests; keep integration tests in CI with isolated DB instances.",
+    "advanced_notes": "Use contract tests for public APIs; keep test suites fast with selective test runs and parallelization.",
+    "checklist": ["Cover core logic","Keep unit tests deterministic","Run tests in CI on PRs"]
+  },
+  "logging": {
+    "title": "Logging: structured and actionable",
+    "summary": "Log structured context (request id, user id) and avoid printf-debugging in production.",
+    "beginner_example": "Add a log when important events happen: logger.info('order created', order_id=123)",
+    "intermediate_example": "Use structured logging and include correlation ids; send logs to centralized storage.",
+    "advanced_notes": "Instrument logs with tracing and correlate with metrics and spans for observability.",
+    "checklist": ["Use structured logs","Include correlation/request ids","Avoid logging secrets"]
+  },
+  "documentation": {
+    "title": "Documentation: explain why and how",
+    "summary": "Docs should show purpose, examples, and when to use an API — not just what each function does.",
+    "beginner_example": "Write a short README with a 'Getting started' section.",
+    "intermediate_example": "Add usage examples and a 'Common pitfalls' section to module docs.",
+    "advanced_notes": "Keep docs versioned with the code and publish stable API docs for consumers.",
+    "checklist": ["Add quickstart","Show examples","Keep docs near code"]
+  },
+  "modularity": {
+    "title": "Modularity: small responsibilities",
+    "summary": "Design functions/modules with a single responsibility to keep code testable and reusable.",
+    "beginner_example": "Replace a large 200-line function with three smaller functions each doing one thing.",
+    "intermediate_example": "Group related functions into modules and define clear interfaces.",
+    "advanced_notes": "Apply bounded contexts and domain-driven design to scale large systems.",
+    "checklist": ["Single responsibility per function","Readable public interfaces","Organize by feature/domain"]
+  },
+  "api_design": {
+    "title": "API design: predictable and minimal",
+    "summary": "Design APIs that are intuitive, stable, and versioned when changing.",
+    "beginner_example": "Use nouns for REST resources: GET /users, POST /orders.",
+    "intermediate_example": "Return consistent error shapes and document response schemas.",
+    "advanced_notes": "Design for idempotency, rate-limiting, and backward compatibility.",
+    "checklist": ["Use consistent naming","Document responses","Version breaking changes"]
+  },
+  "dependency_management": {
+    "title": "Dependencies: pin and audit",
+    "summary": "Pin versions, review updates, and run audits for vulnerabilities.",
+    "beginner_example": "Use a lockfile (package-lock.json or Pipfile.lock).",
+    "intermediate_example": "Automate dependency updates in CI with tests and review PRs.",
+    "advanced_notes": "Use SBOMs and isolate risky dependencies via sandboxing.",
+    "checklist": ["Pin versions","Run security audits","Test before updating"]
+  },
+  "security": {
+    "title": "Security: least privilege and secret management",
+    "summary": "Use least privilege, rotate secrets, and avoid hardcoding credentials.",
+    "beginner_example": "Store API keys in environment variables, not source code.",
+    "intermediate_example": "Use managed secret stores and assign narrow IAM roles.",
+    "advanced_notes": "Threat model your features, use defense in depth, and run regular pentests.",
+    "checklist": ["Never commit secrets","Use least privilege","Rotate credentials"]
+  },
+  "performance": {
+    "title": "Performance: measure before optimizing",
+    "summary": "Profile and measure; optimize hotspots instead of guessing.",
+    "beginner_example": "Measure response time for a slow endpoint before changing code.",
+    "intermediate_example": "Cache expensive results and measure cache hit rates.",
+    "advanced_notes": "Consider algorithmic complexity, memory patterns, and distribution of load.",
+    "checklist": ["Measure first","Optimize hotspots","Monitor after deploy"]
+  },
+  "code_reviews": {
+    "title": "Code reviews: constructive and focused",
+    "summary": "Use PRs to share context and improve code quality; focus reviews on design, tests, and readability.",
+    "beginner_example": "Ask for review on small PRs (max ~200 lines) and include testing notes.",
+    "intermediate_example": "Enforce checklist items with CI and use templates for PR descriptions.",
+    "advanced_notes": "Use automated linters + static analysis and teach reviewers to focus on architecture, not style.",
+    "checklist": ["Keep PRs small","Include tests","Be constructive and specific"]
+  },
+  "dependency_injection": {
+    "title": "Dependency injection: decouple for testability",
+    "summary": "Inject dependencies rather than constructing them inside functions to make testing easier.",
+    "beginner_example": "Pass a database client into a function rather than creating it inside.",
+    "intermediate_example": "Use simple factories or containers to manage dependencies in medium apps.",
+    "advanced_notes": "Balance complexity: heavy DI frameworks can add indirection; prefer simple patterns where possible.",
+    "checklist": ["Pass dependencies in","Mock injected dependencies in tests","Avoid over-engineering DI frameworks"]
+  }
+}
