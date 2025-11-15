@@ -17,13 +17,13 @@ export async function runAgent(note, mode = "summarize", level = "intermediate")
     }
 
     if (level == "beginner"){
-        systemPrompt + " Explain this like I'm a beginner level."
+        systemPrompt += " Explain this like I'm a beginner level."
     }
     else if (level == "intermediate"){
-        systemPrompt + " Explain this like I'm a intermediate level."
+        systemPrompt += " Explain this like I'm a intermediate level."
     }
     else if (level == "expert"){
-        systemPrompt + " Explain this like I'm a expert level."
+        systemPrompt += " Explain this like I'm a expert level."
     }
 
   const response = await client.chat.completions.create({

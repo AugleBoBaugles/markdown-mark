@@ -4,11 +4,18 @@ export default function MarkdownMark() {
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [placeholderSelected, setPlaceholderSelected] = useState(null);
   const [text, setText] = useState("");
+  const [output, setOutput] = useState("");
 
   const levelButtons = ["Beginner", "Intermediate", "Advanced"];
   const placeholderButtons = ["Simplify", "Shorten", "Add Examples", "Compare"];
 
-  // Unified button styling
+  const modeMap = {
+    Simplify: "simplify",
+    Shorten: "shorten",
+    "Add Examples": "addExamples",
+    Compare: "compareWithOtherTools",
+  };
+
   const buttonStyle = (selected, isGo = false, isSmall = false) => ({
     padding: isSmall ? "6px 14px" : isGo ? "14px 28px" : "10px 20px",
     borderRadius: "6px",
@@ -19,56 +26,33 @@ export default function MarkdownMark() {
     fontWeight: selected ? "bold" : "normal",
     transition: "0.2s",
     outline: "none",
-
-    // GO button color interactions (special)
-    ...(isGo && {
-      width: "500px", // match textbox width
-      textAlign: "center",
-    }),
+    ...(isGo && { width: "500px", textAlign: "center" }),
   });
 
-  // Inline pseudo-class workaround for React
-  const applyGoButtonInteractions = (e) => {
-    if (e.type === "mouseover") {
-      e.target.style.backgroundColor = "#e6f0ff";
-    }
-    if (e.type === "mouseout") {
-      e.target.style.backgroundColor = "white";
-      e.target.style.color = "black";
-    }
-    if (e.type === "mousedown") {
-      e.target.style.backgroundColor = "#357ae8";
-      e.target.style.color = "white";
-    }
-    if (e.type === "mouseup") {
-      e.target.style.backgroundColor = "#e6f0ff";
-      e.target.style.color = "black";
-    }
-    if (e.type === "focus") {
-      e.target.style.borderColor = "#4285f4";
-      e.target.style.boxShadow = "0 0 0 2px rgba(66,133,244,0.5)";
-    }
-    if (e.type === "blur") {
-      e.target.style.borderColor = "#ccc";
-      e.target.style.boxShadow = "none";
+  const handleGoClick = async () => {
+    if (!text) return;
+
+    const mode = placeholderSelected ? modeMap[placeholderSelected] : "summarize";
+    const level = selectedLevel ? selectedLevel.toLowerCase() : "intermediate";
+
+    try {
+      const res = await fetch("http://localhost:5000/api/run-agent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ note: text, mode, level }),
+      });
+      const data = await res.json();
+      setOutput(data.output || "No output returned.");
+    } catch (err) {
+      console.error(err);
+      setOutput("Error: Could not generate output. Check console.");
     }
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "40px",
-        gap: "20px",
-        textAlign: "center",
-      }}
-    >
-      <h6 style={{ fontSize: "32px", marginBottom: "10px" }}>Markdown Mark</h6>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "40px", gap: "20px", textAlign: "center" }}>
+      <h1 style={{ fontSize: "32px" }}>Markdown Mark</h1>
 
-      {/* Level Buttons */}
       <div style={{ display: "flex", gap: "15px" }}>
         {levelButtons.map((level) => (
           <button
@@ -81,23 +65,13 @@ export default function MarkdownMark() {
         ))}
       </div>
 
-      {/* Textbox */}
       <textarea
         placeholder="Paste URL or documentation here..."
         value={text}
         onChange={(e) => setText(e.target.value)}
-        style={{
-          width: "500px",
-          height: "150px",
-          padding: "10px",
-          fontSize: "14px",
-          resize: "none",
-          borderRadius: "6px",
-          border: "1px solid #aaa",
-        }}
+        style={{ width: "500px", height: "150px", padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #aaa" }}
       />
 
-      {/* Smaller Placeholder Buttons */}
       <div style={{ display: "flex", gap: "15px" }}>
         {placeholderButtons.map((action) => (
           <button
@@ -110,18 +84,17 @@ export default function MarkdownMark() {
         ))}
       </div>
 
-      {/* GO button same width as textbox */}
-      <button
-        style={buttonStyle(false, true)}
-        onMouseOver={applyGoButtonInteractions}
-        onMouseOut={applyGoButtonInteractions}
-        onMouseDown={applyGoButtonInteractions}
-        onMouseUp={applyGoButtonInteractions}
-        onFocus={applyGoButtonInteractions}
-        onBlur={applyGoButtonInteractions}
-      >
+      <button onClick={handleGoClick} style={buttonStyle(false, true)}>
         GO
       </button>
+
+      {output && (
+        <textarea
+          value={output}
+          readOnly
+          style={{ width: "500px", height: "200px", marginTop: "20px", padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #aaa" }}
+        />
+      )}
     </div>
   );
 }
